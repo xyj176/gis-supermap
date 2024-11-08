@@ -43,6 +43,7 @@ public class DatasourceTool {
      * 打开gdb数据源。方式等同于打开shp数据。
      * 11.2以后支持直接打开。
      * 只读，不可写
+     *
      * @param workspace
      * @param gdb
      * @return
@@ -65,8 +66,18 @@ public class DatasourceTool {
         return datasource;
     }
 
+    /**
+     * 打开cad数据源。方式等同于打开shp数据。
+     * dwg、dxf都支持
+     * 只读，不可写
+     *
+     * @param workspace
+     * @param cad
+     * @return
+     */
     public static Datasource openCAD(Workspace workspace, String cad) {
-        return null;
+        Datasource datasource = openShp(workspace, cad);
+        return datasource;
     }
 
     public static Datasource openJson(Workspace workspace, String json) {

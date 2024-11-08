@@ -45,4 +45,14 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenCAD() {
+        Workspace workspace = new Workspace();
+//        String cad = "D:\\data\\cad\\STBHHX.dwg";
+        String cad = "D:\\data\\cad\\GHFW.dxf";
+        Datasource datasource = DatasourceTool.openCAD(workspace, cad);
+        String server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }
