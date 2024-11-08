@@ -27,4 +27,13 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenMdb() {
+        Workspace workspace = new Workspace();
+        String mdb = "D:\\data\\mdb\\DS.mdb";
+        Datasource datasource = DatasourceTool.openMDB(workspace, mdb);
+        String server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }

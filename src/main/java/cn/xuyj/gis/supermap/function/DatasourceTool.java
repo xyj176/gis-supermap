@@ -14,7 +14,8 @@ import java.util.UUID;
 public class DatasourceTool {
 
     /**
-     * 打开shp数据源
+     * 打开shp数据源。
+     * 只读，不可写！
      *
      * @param workspace
      * @param shp
@@ -26,7 +27,8 @@ public class DatasourceTool {
     }
 
     /**
-     * 打开udbx数据源
+     * 打开udbx数据源。
+     * 可读可写！
      *
      * @param workspace
      * @param udbx
@@ -41,8 +43,17 @@ public class DatasourceTool {
         return null;
     }
 
+    /**
+     * 打开mdb数据。方式等同于打开shp数据。
+     * 只读，不可写！
+     *
+     * @param workspace
+     * @param mdb
+     * @return
+     */
     public static Datasource openMDB(Workspace workspace, String mdb) {
-        return null;
+        Datasource datasource = openShp(workspace, mdb);
+        return datasource;
     }
 
     public static Datasource openCAD(Workspace workspace, String cad) {
