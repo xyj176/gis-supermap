@@ -3,9 +3,6 @@ package cn.xuyj.gis.supermap.license;
 import lombok.Data;
 import com.supermap.data.bslicense.BSLicense;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 /**
  * @author xuyj
  * @since 2024/11/8 10:22
@@ -58,12 +55,5 @@ public class License {
     public void logout() {
         System.out.println("登出在线许可");
         BSLicense.logout();
-    }
-
-    public static void main(String[] args) {
-        License license = new License();
-        license.setIp("192.168.200.60");
-        license.login();
-        license.logout();
     }
 }
