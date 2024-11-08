@@ -80,8 +80,17 @@ public class DatasourceTool {
         return datasource;
     }
 
+    /**
+     * 打开GeoJson数据源。方式等同于打开shp数据。
+     * 只读，不可写
+     *
+     * @param workspace
+     * @param json
+     * @return
+     */
     public static Datasource openJson(Workspace workspace, String json) {
-        return null;
+        Datasource datasource = openShp(workspace, json);
+        return datasource;
     }
 
     public static Datasource openDatabase(Workspace workspace, String server, String database, String user, String pass, EngineType type) {

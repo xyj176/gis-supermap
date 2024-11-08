@@ -55,4 +55,13 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenJson() {
+        Workspace workspace = new Workspace();
+        String json = "D:\\data\\json\\STBHHX.json";
+        Datasource datasource = DatasourceTool.openJson(workspace, json);
+        String server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }
