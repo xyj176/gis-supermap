@@ -12,8 +12,6 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <supermap.version>11.2.1</supermap.version>
-        <!--本地iobjectsjava的路径-->
-        <iobject.local.path>D:/software/SuperMap/iobject/java/11.2.1/Bin</iobject.local.path>
     </properties>
 
     <dependencies>
@@ -22,7 +20,7 @@
             <artifactId>com.supermap.data</artifactId>
             <version>${supermap.version}</version>
             <scope>system</scope>
-            <systemPath>${iobject.local.path}/com.supermap.data.jar</systemPath>
+            <systemPath>${project.basedir}/src/main/resources/iobjectsjava-11.2.1/com.supermap.data.jar</systemPath>
         </dependency>
     </dependencies>
 
