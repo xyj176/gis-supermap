@@ -76,4 +76,16 @@ public class DatasourceToolTest {
         server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenPostGIS() {
+        Workspace workspace = new Workspace();
+        String server = "***";
+        String database = "***";
+        String user = "***";
+        String pass = "***";
+        Datasource datasource = DatasourceTool.openPostGIS(workspace, server, database, user, pass);
+        server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }

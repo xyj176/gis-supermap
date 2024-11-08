@@ -22,7 +22,7 @@ public class DatasourceTool {
      * @return
      */
     public static Datasource openShp(Workspace workspace, String shp) {
-        Datasource datasource = openDatasource(workspace, shp, EngineType.VECTORFILE);
+        Datasource datasource = openFileDatasource(workspace, shp, EngineType.VECTORFILE);
         return datasource;
     }
 
@@ -35,7 +35,7 @@ public class DatasourceTool {
      * @return
      */
     public static Datasource openUdbx(Workspace workspace, String udbx) {
-        Datasource datasource = openDatasource(workspace, udbx, EngineType.UDBX);
+        Datasource datasource = openFileDatasource(workspace, udbx, EngineType.UDBX);
         return datasource;
     }
 
@@ -105,22 +105,65 @@ public class DatasourceTool {
      * @return
      */
     public static Datasource openPostgreSQL(Workspace workspace, String server, String database, String user, String pass) {
+        Datasource datasource = openDBDatasource(workspace, server, database, user, pass, EngineType.POSTGRESQL);
+        return datasource;
+    }
+
+    /**
+     * 打开PostGIS空间库数据源。
+     * 可读可写
+     *
+     * @param workspace
+     * @param server:数据库服务器的ip+port
+     * @param database:数据库名称
+     * @param user:用户名
+     * @param pass:密码
+     * @return
+     */
+    public static Datasource openPostGIS(Workspace workspace, String server, String database, String user, String pass) {
+        Datasource datasource = openDBDatasource(workspace, server, database, user, pass, EngineType.PGGIS);
+        return datasource;
+    }
+
+
+    /**
+     * 打开文件型数据源
+     *
+     * @param workspace
+     * @param datasourcePath：数据源文件路径
+     * @param engineType：数据源类型
+     * @return
+     */
+    private static Datasource openFileDatasource(Workspace workspace, String datasourcePath, EngineType engineType) {
+        DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
+        datasourceConnectionInfo.setServer(datasourcePath);
+        datasourceConnectionInfo.setEngineType(engineType);
+        datasourceConnectionInfo.setAlias(UUID.randomUUID().toString());
+        Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
+        return datasource;
+    }
+
+    /**
+     * 打开数据库型数据源
+     *
+     * @param workspace
+     * @param server：数据库服务器的ip+port
+     * @param database：数据库名称
+     * @param user：用户名
+     * @param pass：密码
+     * @param type：数据库类型
+     * @return
+     */
+    private static Datasource openDBDatasource(Workspace workspace, String server, String database, String user, String pass, EngineType type) {
         DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
         datasourceConnectionInfo.setServer(server);
         datasourceConnectionInfo.setDatabase(database);
         datasourceConnectionInfo.setUser(user);
         datasourceConnectionInfo.setPassword(pass);
-        datasourceConnectionInfo.setEngineType(EngineType.POSTGRESQL);
-        datasourceConnectionInfo.setAlias("POSTGRESQL");
-        Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
-        return datasource;
-    }
-
-    private static Datasource openDatasource(Workspace workspace, String datasourcePath, EngineType engineType) {
-        DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
-        datasourceConnectionInfo.setServer(datasourcePath);
-        datasourceConnectionInfo.setEngineType(engineType);
-        datasourceConnectionInfo.setAlias(UUID.randomUUID().toString());
+        datasourceConnectionInfo.setEngineType(type);
+        datasourceConnectionInfo.setAlias(database);
+        if (EngineType.SQLPLUS.equals(type))
+            datasourceConnectionInfo.setDriver("SQL Server");
         Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
         return datasource;
     }
