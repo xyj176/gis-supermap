@@ -16,11 +16,19 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.supermap.iobjects</groupId>
+            <groupId>com.supermap</groupId>
             <artifactId>com.supermap.data</artifactId>
             <version>${supermap.version}</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/iobjectsjava-11.2.1/com.supermap.data.jar</systemPath>
+        </dependency>
+
+        <dependency>
+            <groupId>com.supermap</groupId>
+            <artifactId>com.supermap.data.conversion</artifactId>
+            <version>${supermap.version}</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/iobjectsjava-11.2.1/com.supermap.data.conversion.jar</systemPath>
         </dependency>
 
         <!--在线许可依赖-->
@@ -45,6 +53,12 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.8.2</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.5.2</version>
         </dependency>
     </dependencies>
 
