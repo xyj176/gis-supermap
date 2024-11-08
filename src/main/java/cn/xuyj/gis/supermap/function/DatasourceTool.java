@@ -39,8 +39,17 @@ public class DatasourceTool {
         return datasource;
     }
 
+    /**
+     * 打开gdb数据源。方式等同于打开shp数据。
+     * 11.2以后支持直接打开。
+     * 只读，不可写
+     * @param workspace
+     * @param gdb
+     * @return
+     */
     public static Datasource openGDB(Workspace workspace, String gdb) {
-        return null;
+        Datasource datasource = openShp(workspace, gdb);
+        return datasource;
     }
 
     /**

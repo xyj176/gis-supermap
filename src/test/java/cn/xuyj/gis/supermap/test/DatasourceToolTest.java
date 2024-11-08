@@ -36,4 +36,13 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenGdb() {
+        Workspace workspace = new Workspace();
+        String gdb = "D:\\data\\gdb\\test.gdb";
+        Datasource datasource = DatasourceTool.openGDB(workspace, gdb);
+        String server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }
