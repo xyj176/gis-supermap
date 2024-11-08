@@ -93,8 +93,27 @@ public class DatasourceTool {
         return datasource;
     }
 
-    public static Datasource openDatabase(Workspace workspace, String server, String database, String user, String pass, EngineType type) {
-        return null;
+    /**
+     * 打开PostgreSQL空间库数据源。
+     * 可读可写
+     *
+     * @param workspace
+     * @param server:数据库服务器的ip+port
+     * @param database:数据库名称
+     * @param user:用户名
+     * @param pass:密码
+     * @return
+     */
+    public static Datasource openPostgreSQL(Workspace workspace, String server, String database, String user, String pass) {
+        DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
+        datasourceConnectionInfo.setServer(server);
+        datasourceConnectionInfo.setDatabase(database);
+        datasourceConnectionInfo.setUser(user);
+        datasourceConnectionInfo.setPassword(pass);
+        datasourceConnectionInfo.setEngineType(EngineType.POSTGRESQL);
+        datasourceConnectionInfo.setAlias("POSTGRESQL");
+        Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
+        return datasource;
     }
 
     private static Datasource openDatasource(Workspace workspace, String datasourcePath, EngineType engineType) {

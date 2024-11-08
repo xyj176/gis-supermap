@@ -64,4 +64,16 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenPostgreSQL() {
+        Workspace workspace = new Workspace();
+        String server = "192.168.1.60:46062";
+        String database = "spatial_cq";
+        String user = "gtpt";
+        String pass = "OfdJud4Z!Pms";
+        Datasource datasource = DatasourceTool.openPostgreSQL(workspace, server, database, user, pass);
+        server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }
