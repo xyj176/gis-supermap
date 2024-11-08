@@ -21,16 +21,20 @@ public class DatasourceTool {
      * @return
      */
     public static Datasource openShp(Workspace workspace, String shp) {
-        DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
-        datasourceConnectionInfo.setServer(shp);
-        datasourceConnectionInfo.setEngineType(EngineType.VECTORFILE);
-        datasourceConnectionInfo.setAlias(UUID.randomUUID().toString());
-        Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
+        Datasource datasource = openDatasource(workspace, shp, EngineType.VECTORFILE);
         return datasource;
     }
 
+    /**
+     * 打开udbx数据源
+     *
+     * @param workspace
+     * @param udbx
+     * @return
+     */
     public static Datasource openUdbx(Workspace workspace, String udbx) {
-        return null;
+        Datasource datasource = openDatasource(workspace, udbx, EngineType.UDBX);
+        return datasource;
     }
 
     public static Datasource openGDB(Workspace workspace, String gdb) {
@@ -51,5 +55,14 @@ public class DatasourceTool {
 
     public static Datasource openDatabase(Workspace workspace, String server, String database, String user, String pass, EngineType type) {
         return null;
+    }
+
+    private static Datasource openDatasource(Workspace workspace, String datasourcePath, EngineType engineType) {
+        DatasourceConnectionInfo datasourceConnectionInfo = new DatasourceConnectionInfo();
+        datasourceConnectionInfo.setServer(datasourcePath);
+        datasourceConnectionInfo.setEngineType(engineType);
+        datasourceConnectionInfo.setAlias(UUID.randomUUID().toString());
+        Datasource datasource = workspace.getDatasources().open(datasourceConnectionInfo);
+        return datasource;
     }
 }

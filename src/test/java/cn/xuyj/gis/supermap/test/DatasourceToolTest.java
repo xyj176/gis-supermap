@@ -18,4 +18,13 @@ public class DatasourceToolTest {
         String server = datasource.getConnectionInfo().getServer();
         System.out.println(server);
     }
+
+    @Test
+    public void testOpenUdbx() {
+        Workspace workspace = new Workspace();
+        String udbx = "D:\\data\\udbx\\Datasource.udbx";
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+        String server = datasource.getConnectionInfo().getServer();
+        System.out.println(server);
+    }
 }
