@@ -6,6 +6,10 @@ import com.supermap.data.Charset;
 import com.supermap.data.Datasource;
 import com.supermap.data.conversion.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * @author xuyj
  * @des 数据导入工具类
@@ -44,6 +48,7 @@ public class DataImportTool {
         if (StrUtil.isNotEmpty(targetName))
             importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
         ImportResult run = runImport(importSetting);
         if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
@@ -80,6 +85,7 @@ public class DataImportTool {
         if (StrUtil.isNotEmpty(targetName))
             importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
         //setTargetDatasource() 与 setTargetDatasourceConnectionInfo() 两个方法相互冲突，
         //即对其中一个方法进行设置后，之前另一方法的设置值将被修改为 null
         //setTargetDatasourceConnectionInfo()有一个优点：如果没有对应的数据源，则根据连接信息新建
@@ -114,6 +120,7 @@ public class DataImportTool {
         if (StrUtil.isNotEmpty(targetName))
             importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
         //默认为 true，即导入为 CAD 数据集, 否则为数据对应类型的简单矢量数据集
         //简单矢量数据集包含一个线图层和一个面图层
         importSetting.setImportingAsCAD(true);
@@ -154,6 +161,7 @@ public class DataImportTool {
         if (StrUtil.isNotEmpty(targetName))
             importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
         //默认为 true，即导入为 CAD 数据集, 否则为数据对应类型的简单矢量数据集
         //简单矢量数据集包含一个线图层和一个面图层
         importSetting.setImportingAsCAD(true);
@@ -162,6 +170,32 @@ public class DataImportTool {
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入DWG数据失败！");
+        importSetting.dispose();
+        return result;
+    }
+
+    /**
+     * 导入MDB。导入所有图层
+     *
+     * @param mdb：mdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @return
+     */
+    public static List<String> importMDB(String mdb, Datasource datasource) {
+        List<String> result = new ArrayList<>();
+        ImportSettingPersonalGDBVector importSetting = new ImportSettingPersonalGDBVector();
+        importSetting.setSourceFilePath(mdb);
+        importSetting.setSourceFileCharset(Charset.UTF8);
+        importSetting.setTargetDatasource(datasource);
+        importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setIsImportEmptyDataset(true);
+        ImportResult run = runImport(importSetting);
+        ImportSetting[] succeedSettings = run.getSucceedSettings();
+        if (ObjectUtil.isNotEmpty(succeedSettings)) {
+            String[] succeedDatasetNames = run.getSucceedDatasetNames(succeedSettings[0]);
+            result = Arrays.asList(succeedDatasetNames);
+        } else
+            System.out.println("导入MDB失败！");
         importSetting.dispose();
         return result;
     }

@@ -6,6 +6,8 @@ import com.supermap.data.Datasource;
 import com.supermap.data.Workspace;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 /**
  * @author xuyj
  * @since 2024/11/8 17:10
@@ -13,7 +15,7 @@ import org.junit.jupiter.api.Test;
 public class DataImportToolTest {
     @Test
     public void testImportShp() {
-        String shp = "D:\\data\\shp\\XZQ_CQ.shp";
+        String shp = "D:\\data\\shp\\empty.shp";
         String udbx = "D:\\data\\udbx\\DataSource.udbx";
         Workspace workspace = new Workspace();
         Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
@@ -53,5 +55,16 @@ public class DataImportToolTest {
         String importDxf = DataImportTool.importDXF(dxf, datasource, "import_dxf");
         System.out.println("成功导入【" + importDxf + "】");
         System.out.println("dxf导入成功");
+    }
+
+    @Test
+    public void testImportMDB() {
+        String mdb = "D:\\data\\mdb\\DS.mdb";
+        String udbx = "D:\\data\\udbx\\DataSource.udbx";
+        Workspace workspace = new Workspace();
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+        List<String> importDxf = DataImportTool.importMDB(mdb, datasource);
+        System.out.println("成功导入【" + importDxf.toString() + "】");
+        System.out.println("mdb导入成功");
     }
 }
