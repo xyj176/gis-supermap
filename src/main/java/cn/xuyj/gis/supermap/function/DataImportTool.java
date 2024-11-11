@@ -5,6 +5,8 @@ import com.supermap.data.Charset;
 import com.supermap.data.Datasource;
 import com.supermap.data.conversion.*;
 
+import javax.xml.crypto.Data;
+
 /**
  * @author xuyj
  * @des 数据导入工具类
@@ -44,6 +46,7 @@ public class DataImportTool {
 
     /**
      * 导入geojson文件
+     *
      * @param geoJson：geojson文件路径
      * @param datasource：数据源，udbx或空间库数据源
      * @param targetName：导入后的图层名
@@ -67,6 +70,37 @@ public class DataImportTool {
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入geoJson数据失败！");
+        dataImport.dispose();
+        importSetting.dispose();
+        return result;
+    }
+
+    /**
+     * 导入DWG
+     *
+     * @param dwg：dwg文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @param targetName：导入后的图层名
+     * @return：成功导入的图层名
+     */
+    public static String importDWG(String dwg, Datasource datasource, String targetName) {
+        String result = "";
+        ImportSettingDWG importSetting = new ImportSettingDWG();
+        importSetting.setSourceFilePath(dwg);
+        importSetting.setSourceFileCharset(Charset.UTF8);
+        importSetting.setTargetDatasource(datasource);
+        importSetting.setTargetDatasetName(targetName);
+        importSetting.setImportMode(ImportMode.NONE);
+        //默认为 true，即导入为 CAD 数据集, 否则为数据对应类型的简单矢量数据集
+        //简单矢量数据集包含一个线图层和一个面图层
+        importSetting.setImportingAsCAD(true);
+        DataImport dataImport = new DataImport();
+        dataImport.getImportSettings().add(importSetting);
+        ImportResult run = dataImport.run();
+        if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
+            result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
+        else
+            System.out.println("导入DWG数据失败！");
         dataImport.dispose();
         importSetting.dispose();
         return result;

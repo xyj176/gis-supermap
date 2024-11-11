@@ -27,8 +27,19 @@ public class DataImportToolTest {
         String udbx = "D:\\data\\udbx\\DataSource.udbx";
         Workspace workspace = new Workspace();
         Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
-        String importShp = DataImportTool.importGeoJson(json, datasource, "import_geojson");
-        System.out.println("成功导入【" + importShp + "】");
+        String importGeojson = DataImportTool.importGeoJson(json, datasource, "import_geojson");
+        System.out.println("成功导入【" + importGeojson + "】");
         System.out.println("geoJson导入成功");
+    }
+
+    @Test
+    public void testImportDWG() {
+        String dwg = "D:\\data\\cad\\STBHHX.dwg";
+        String udbx = "D:\\data\\udbx\\DataSource.udbx";
+        Workspace workspace = new Workspace();
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+        String importDwg = DataImportTool.importDWG(dwg, datasource, "import_dwg");
+        System.out.println("成功导入【" + importDwg + "】");
+        System.out.println("dwg导入成功");
     }
 }
