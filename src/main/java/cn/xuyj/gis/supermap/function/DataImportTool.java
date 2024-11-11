@@ -21,8 +21,7 @@ public class DataImportTool {
      * @return：成功导入的图层名
      */
     public static String importShp(String shp, Datasource datasource) {
-        String result = importShp(shp, datasource, "");
-        return result;
+        return importShp(shp, datasource, "");
     }
 
     /**
@@ -62,8 +61,7 @@ public class DataImportTool {
      * @return：成功导入的图层名
      */
     public static String importGeoJson(String geoJson, Datasource datasource) {
-        String result = importGeoJson(geoJson, datasource, "");
-        return result;
+        return importGeoJson(geoJson, datasource, "");
     }
 
     /**
@@ -93,6 +91,10 @@ public class DataImportTool {
             System.out.println("导入geoJson数据失败！");
         importSetting.dispose();
         return result;
+    }
+
+    public static String importDWG(String dwg, Datasource datasource) {
+        return importDWG(dwg, datasource, "");
     }
 
     /**
