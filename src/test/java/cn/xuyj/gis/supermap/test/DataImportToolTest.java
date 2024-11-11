@@ -20,4 +20,15 @@ public class DataImportToolTest {
         String importShp = DataImportTool.importShp(shp, datasource, "import");
         System.out.println("shp导入成功");
     }
+
+    @Test
+    public void testImportGeoJson() {
+        String json = "D:\\data\\json\\STBHHX.json";
+        String udbx = "D:\\data\\udbx\\DataSource.udbx";
+        Workspace workspace = new Workspace();
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+        String importShp = DataImportTool.importGeoJson(json, datasource, "import_geojson");
+        System.out.println("成功导入【" + importShp + "】");
+        System.out.println("geoJson导入成功");
+    }
 }
