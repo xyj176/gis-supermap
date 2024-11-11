@@ -12,6 +12,19 @@ import com.supermap.data.conversion.*;
  * @since 2024/11/8 15:39
  */
 public class DataImportTool {
+
+    /**
+     * 导入shp
+     *
+     * @param shp：shp文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @return：成功导入的图层名
+     */
+    public static String importShp(String shp, Datasource datasource) {
+        String result = importShp(shp, datasource, "");
+        return result;
+    }
+
     /**
      * 导入shp
      *
