@@ -1,6 +1,7 @@
 package cn.xuyj.gis.supermap.function;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.supermap.data.Charset;
 import com.supermap.data.Datasource;
 import com.supermap.data.conversion.*;
@@ -16,29 +17,27 @@ public class DataImportTool {
      *
      * @param shp：shp文件路径
      * @param datasource：数据源，udbx或空间库数据源
-     * @param targetName：导入后的图层名
+     * @param targetName：导入后的图层名，为空则默认采用原名称
      * @return：成功导入的图层名
      */
     public static String importShp(String shp, Datasource datasource, String targetName) {
         String result = "";
-        ImportSettingSHP importSettingSHP = new ImportSettingSHP();
-        importSettingSHP.setSourceFilePath(shp);
-        importSettingSHP.setSourceFileCharset(Charset.UTF8);
+        ImportSettingSHP importSetting = new ImportSettingSHP();
+        importSetting.setSourceFilePath(shp);
+        importSetting.setSourceFileCharset(Charset.UTF8);
         //setTargetDatasource() 与 setTargetDatasourceConnectionInfo() 两个方法相互冲突，
         //即对其中一个方法进行设置后，之前另一方法的设置值将被修改为 null
         //setTargetDatasourceConnectionInfo()有一个优点：如果没有对应的数据源，则根据连接信息新建
-        importSettingSHP.setTargetDatasource(datasource);
-        importSettingSHP.setTargetDatasetName(targetName);
-        importSettingSHP.setImportMode(ImportMode.NONE);
-        DataImport dataImport = new DataImport();
-        dataImport.getImportSettings().add(importSettingSHP);
-        ImportResult run = dataImport.run();
+        importSetting.setTargetDatasource(datasource);
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
+        importSetting.setImportMode(ImportMode.NONE);
+        ImportResult run = runImport(importSetting);
         if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入shp数据失败！");
-        dataImport.dispose();
-        importSettingSHP.dispose();
+        importSetting.dispose();
         return result;
     }
 
@@ -47,7 +46,7 @@ public class DataImportTool {
      *
      * @param geoJson：geojson文件路径
      * @param datasource：数据源，udbx或空间库数据源
-     * @param targetName：导入后的图层名
+     * @param targetName：导入后的图层名，为空则默认采用原名称
      * @return：成功导入的图层名
      */
     public static String importGeoJson(String geoJson, Datasource datasource, String targetName) {
@@ -55,20 +54,18 @@ public class DataImportTool {
         ImportSettingGeoJson importSetting = new ImportSettingGeoJson();
         importSetting.setSourceFilePath(geoJson);
         importSetting.setSourceFileCharset(Charset.UTF8);
-        importSetting.setTargetDatasetName(targetName);
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
         //setTargetDatasource() 与 setTargetDatasourceConnectionInfo() 两个方法相互冲突，
         //即对其中一个方法进行设置后，之前另一方法的设置值将被修改为 null
         //setTargetDatasourceConnectionInfo()有一个优点：如果没有对应的数据源，则根据连接信息新建
         importSetting.setTargetDatasource(datasource);
-        DataImport dataImport = new DataImport();
-        dataImport.getImportSettings().add(importSetting);
-        ImportResult run = dataImport.run();
+        ImportResult run = runImport(importSetting);
         if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入geoJson数据失败！");
-        dataImport.dispose();
         importSetting.dispose();
         return result;
     }
@@ -78,7 +75,7 @@ public class DataImportTool {
      *
      * @param dwg：dwg文件路径
      * @param datasource：数据源，udbx或空间库数据源
-     * @param targetName：导入后的图层名
+     * @param targetName：导入后的图层名，为空则默认采用原名称
      * @return：成功导入的图层名
      */
     public static String importDWG(String dwg, Datasource datasource, String targetName) {
@@ -87,19 +84,17 @@ public class DataImportTool {
         importSetting.setSourceFilePath(dwg);
         importSetting.setSourceFileCharset(Charset.UTF8);
         importSetting.setTargetDatasource(datasource);
-        importSetting.setTargetDatasetName(targetName);
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
         //默认为 true，即导入为 CAD 数据集, 否则为数据对应类型的简单矢量数据集
         //简单矢量数据集包含一个线图层和一个面图层
         importSetting.setImportingAsCAD(true);
-        DataImport dataImport = new DataImport();
-        dataImport.getImportSettings().add(importSetting);
-        ImportResult run = dataImport.run();
+        ImportResult run = runImport(importSetting);
         if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入DWG数据失败！");
-        dataImport.dispose();
         importSetting.dispose();
         return result;
     }
@@ -109,7 +104,7 @@ public class DataImportTool {
      *
      * @param dxf：dxf文件路径
      * @param datasource：数据源，udbx或空间库数据源
-     * @param targetName：导入后的图层名
+     * @param targetName：导入后的图层名，为空则默认采用原名称
      * @return：成功导入的图层名
      */
     public static String importDXF(String dxf, Datasource datasource, String targetName) {
@@ -118,20 +113,26 @@ public class DataImportTool {
         importSetting.setSourceFilePath(dxf);
         importSetting.setSourceFileCharset(Charset.UTF8);
         importSetting.setTargetDatasource(datasource);
-        importSetting.setTargetDatasetName(targetName);
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
         importSetting.setImportMode(ImportMode.NONE);
         //默认为 true，即导入为 CAD 数据集, 否则为数据对应类型的简单矢量数据集
         //简单矢量数据集包含一个线图层和一个面图层
         importSetting.setImportingAsCAD(true);
-        DataImport dataImport = new DataImport();
-        dataImport.getImportSettings().add(importSetting);
-        ImportResult run = dataImport.run();
+        ImportResult run = runImport(importSetting);
         if (ObjectUtil.isNotEmpty(run.getSucceedSettings()))
             result = run.getSucceedDatasetNames(run.getSucceedSettings()[0])[0];
         else
             System.out.println("导入DWG数据失败！");
-        dataImport.dispose();
         importSetting.dispose();
         return result;
+    }
+
+    private static ImportResult runImport(ImportSetting importSetting) {
+        DataImport dataImport = new DataImport();
+        dataImport.getImportSettings().add(importSetting);
+        ImportResult run = dataImport.run();
+        dataImport.dispose();
+        return run;
     }
 }
