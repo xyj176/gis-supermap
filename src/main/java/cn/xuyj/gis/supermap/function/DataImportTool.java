@@ -179,7 +179,7 @@ public class DataImportTool {
      *
      * @param mdb：mdb文件路径
      * @param datasource：数据源，udbx或空间库数据源
-     * @return
+     * @return：所有成功导入的图层名
      */
     public static List<String> importMDB(String mdb, Datasource datasource) {
         List<String> result = new ArrayList<>();
@@ -200,11 +200,59 @@ public class DataImportTool {
         return result;
     }
 
+    /**
+     * @param mdb：mdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @param sourceName：源图层名
+     * @return：成功导入的图层名
+     */
+    public static String importMDB(String mdb, Datasource datasource, String sourceName) {
+        return importMDB(mdb, datasource, sourceName, "");
+    }
+
+    /**
+     * 导入MDB。导入指定的图层
+     *
+     * @param mdb：mdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @param sourceName：源图层名
+     * @param targetName：目标图层名（不要指定，会出错）
+     * @return：：成功导入的图层名
+     */
+    public static String importMDB(String mdb, Datasource datasource, String sourceName, String targetName) {
+        String result = "";
+        ImportSettingPersonalGDBVector importSetting = new ImportSettingPersonalGDBVector();
+        importSetting.setSourceFilePath(mdb);
+        importSetting.setSourceFileCharset(Charset.UTF8);
+        importSetting.setTargetDatasource(datasource);
+        importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setIsImportEmptyDataset(true);
+        if (StrUtil.isNotEmpty(sourceName))
+            importSetting.setImportLayerName(new String[]{sourceName});
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
+        ImportResult run = runImport(importSetting);
+        ImportSetting[] succeedSettings = run.getSucceedSettings();
+        if (ObjectUtil.isNotEmpty(succeedSettings)) {
+            String[] succeedDatasetNames = run.getSucceedDatasetNames(succeedSettings[0]);
+            result = succeedDatasetNames[0];
+        } else
+            System.out.println("导入MDB失败！");
+        importSetting.dispose();
+        return result;
+    }
+
     private static ImportResult runImport(ImportSetting importSetting) {
         DataImport dataImport = new DataImport();
         dataImport.getImportSettings().add(importSetting);
-        ImportResult run = dataImport.run();
-        dataImport.dispose();
+        ImportResult run = null;
+        try {
+            run = dataImport.run();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            dataImport.dispose();
+        }
         return run;
     }
 }
