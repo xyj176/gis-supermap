@@ -42,4 +42,15 @@ public class DataImportToolTest {
         System.out.println("成功导入【" + importDwg + "】");
         System.out.println("dwg导入成功");
     }
+
+    @Test
+    public void testImportDXF() {
+        String dxf = "D:\\data\\cad\\GHFW.dxf";
+        String udbx = "D:\\data\\udbx\\DataSource.udbx";
+        Workspace workspace = new Workspace();
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+        String importDxf = DataImportTool.importDXF(dxf, datasource, "import_dxf");
+        System.out.println("成功导入【" + importDxf + "】");
+        System.out.println("dxf导入成功");
+    }
 }
