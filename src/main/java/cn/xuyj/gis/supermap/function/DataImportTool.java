@@ -59,6 +59,18 @@ public class DataImportTool {
      *
      * @param geoJson：geojson文件路径
      * @param datasource：数据源，udbx或空间库数据源
+     * @return：成功导入的图层名
+     */
+    public static String importGeoJson(String geoJson, Datasource datasource) {
+        String result = importGeoJson(geoJson, datasource, "");
+        return result;
+    }
+
+    /**
+     * 导入geojson文件
+     *
+     * @param geoJson：geojson文件路径
+     * @param datasource：数据源，udbx或空间库数据源
      * @param targetName：导入后的图层名，为空则默认采用原名称
      * @return：成功导入的图层名
      */
