@@ -64,8 +64,20 @@ public class DataImportToolTest {
         Workspace workspace = new Workspace();
         Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
 //        List<String> importDxf = DataImportTool.importMDB(mdb, datasource);
-        String importDxf = DataImportTool.importMDB(mdb, datasource, "xsd", "");
-        System.out.println("成功导入【" + importDxf.toString() + "】");
+        String importMDB = DataImportTool.importMDB(mdb, datasource, "xsd", "");
+        System.out.println("成功导入【" + importMDB.toString() + "】");
         System.out.println("mdb导入成功");
+    }
+
+    @Test
+    public void testImportGDB() {
+        String gdb = "D:\\data\\gdb\\test.gdb";
+        String udbx = "D:\\data\\udbx\\DataSource.udbx";
+        Workspace workspace = new Workspace();
+        Datasource datasource = DatasourceTool.openUdbx(workspace, udbx);
+//        List<String> importGDB = DataImportTool.importGDB(gdb, datasource);
+        String importGDB = DataImportTool.importGDB(gdb, datasource, "jkl","jklove");
+        System.out.println("成功导入【" + importGDB.toString() + "】");
+        System.out.println("gdb导入成功");
     }
 }

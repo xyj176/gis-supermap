@@ -217,7 +217,7 @@ public class DataImportTool {
      * @param datasource：数据源，udbx或空间库数据源
      * @param sourceName：源图层名
      * @param targetName：目标图层名（不要指定，会出错）
-     * @return：：成功导入的图层名
+     * @return：成功导入的图层名
      */
     public static String importMDB(String mdb, Datasource datasource, String sourceName, String targetName) {
         String result = "";
@@ -241,6 +241,77 @@ public class DataImportTool {
         importSetting.dispose();
         return result;
     }
+
+    /**
+     * 导入GDB。导入所有图层
+     *
+     * @param gdb：gdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @return：所有成功导入的图层名
+     */
+    public static List<String> importGDB(String gdb, Datasource datasource) {
+        List<String> result = new ArrayList<>();
+        ImportSettingFileGDBVector importSetting = new ImportSettingFileGDBVector();
+        importSetting.setSourceFilePath(gdb);
+        importSetting.setSourceFileCharset(Charset.UTF8);
+        importSetting.setTargetDatasource(datasource);
+        importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
+        ImportResult run = runImport(importSetting);
+        ImportSetting[] succeedSettings = run.getSucceedSettings();
+        if (ObjectUtil.isNotEmpty(succeedSettings)) {
+            String[] succeedDatasetNames = run.getSucceedDatasetNames(succeedSettings[0]);
+            result = Arrays.asList(succeedDatasetNames);
+        } else
+            System.out.println("导入GDB失败！");
+        importSetting.dispose();
+        return result;
+    }
+
+    /**
+     * 导入GDB。
+     *
+     * @param gdb：gdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @param sourceName：源图层名称
+     * @return：成功导入的图层名
+     */
+    public static String importGDB(String gdb, Datasource datasource, String sourceName) {
+        return importGDB(gdb, datasource, sourceName, "");
+    }
+
+    /**
+     * 导入GDB。
+     *
+     * @param gdb：gdb文件路径
+     * @param datasource：数据源，udbx或空间库数据源
+     * @param sourceName：源图层名称
+     * @param targetName：目标图层名称
+     * @return：成功导入的图层名
+     */
+    public static String importGDB(String gdb, Datasource datasource, String sourceName, String targetName) {
+        String result = "";
+        ImportSettingFileGDBVector importSetting = new ImportSettingFileGDBVector();
+        importSetting.setSourceFilePath(gdb);
+        importSetting.setSourceFileCharset(Charset.UTF8);
+        importSetting.setTargetDatasource(datasource);
+        importSetting.setImportMode(ImportMode.NONE);
+        importSetting.setImportEmptyDataset(true);
+        if (StrUtil.isNotEmpty(sourceName))
+            importSetting.setImportLayerName(new String[]{sourceName});
+        if (StrUtil.isNotEmpty(targetName))
+            importSetting.setTargetDatasetName(targetName);
+        ImportResult run = runImport(importSetting);
+        ImportSetting[] succeedSettings = run.getSucceedSettings();
+        if (ObjectUtil.isNotEmpty(succeedSettings)) {
+            String[] succeedDatasetNames = run.getSucceedDatasetNames(succeedSettings[0]);
+            result = succeedDatasetNames[0];
+        } else
+            System.out.println("导入GDB失败！");
+        importSetting.dispose();
+        return result;
+    }
+
 
     private static ImportResult runImport(ImportSetting importSetting) {
         DataImport dataImport = new DataImport();
